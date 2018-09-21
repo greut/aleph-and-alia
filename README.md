@@ -36,9 +36,12 @@ Then query the page.
 And observe.
 
 ```
-09:35:10.298 [manifold-pool-2-1] WARN  aleph-and-alia.main - alia.execute ({:id #uuid "ae463480-7032-42c8-a4e5-0631e20c0519"})
-09:35:10.308 [manifold-pool-2-2] WARN  aleph-and-alia.main - alia.manifold.execute ({:id #uuid "ae463480-7032-42c8-a4e5-0631e20c0519"})
-09:35:10.315 [cluster1-nio-worker-2] WARN  aleph-and-alia.main - alia.manifold.execute + let-flow ({:id #uuid "ae463480-7032-42c8-a4e5-0631e20c0519"})
+13:50:26.719 [manifold-pool-2-1] WARN  aleph-and-alia.main - status 200
+13:50:26.739 [manifold-pool-1-1] WARN  aleph-and-alia.main - status d/chain 200
+13:50:26.753 [manifold-pool-1-2] WARN  aleph-and-alia.main - status d/let-flow 200
+13:50:26.757 [manifold-pool-2-1] WARN  aleph-and-alia.main - alia.execute ({:id #uuid "ae463480-7032-42c8-a4e5-0631e20c0519"})
+13:50:26.760 [manifold-pool-2-3] WARN  aleph-and-alia.main - alia.manifold.execute d/chain ({:id #uuid "ae463480-7032-42c8-a4e5-0631e20c0519"})
+13:50:26.768 [cluster1-nio-worker-3] WARN  aleph-and-alia.main - alia.manifold.execute d/let-flow ({:id #uuid "ae463480-7032-42c8-a4e5-0631e20c0519"})
 ```
 
-The three _warns_ should be ran on a `manifold-pool` thread and none of them should stay on the Cassandra worker ones.
+All the _warns_ should be ran on a `manifold-pool` thread and none of them should stay on the Cassandra worker ones.

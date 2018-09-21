@@ -6,18 +6,32 @@
               [qbits.alia.manifold :as aliam]
               [clojure.tools.logging :refer [info warn]]))
 
+(def url "https://www.exoscale.com/robots.txt")
 (def query "select id from foo.bar limit 1;")
 
 (defn handler
   [session req]
+
+  ;; http
+  (let [resp @(http/get url)]
+    (warn "status" (:status resp)))
+
+  @(d/chain (http/get url)
+           :status
+           #(warn "status d/chain" %))
+
+  @(d/let-flow [resp (http/get url)]
+    (warn "status d/let-flow" (:status resp)))
+
+  ;; cassandra
   (let [bars (alia/execute session query)]
     (warn "alia.execute" bars))
 
-  (d/chain (aliam/execute session query)
-           (fn [bars]
-               (warn "alia.manifold.execute" bars)))
-  (d/let-flow [bars (aliam/execute session query)]
-    (warn "alia.manifold.execute + let-flow" bars))
+  @(d/chain (aliam/execute session query)
+            #(warn "alia.manifold.execute d/chain" %))
+
+  @(d/let-flow [bars (aliam/execute session query)]
+    (warn "alia.manifold.execute d/let-flow" bars))
 
   {:status 200
    :headers {"content-type" "text/plain"}
